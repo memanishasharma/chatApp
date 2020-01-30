@@ -147,6 +147,15 @@ class ChatViewController: UIViewController {
          //   self.chatCollView.reloadData()
         if !is_sent_by_me {
          requestAIResponse(text: chatText)
+        } else {
+            let utterance = AVSpeechUtterance(string: chatText ?? "hi")
+            utterance.volume = 1
+            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+
+            utterance.rate = 0.5
+
+            let synthesizer = AVSpeechSynthesizer()
+            synthesizer.speak(utterance)
         }
     }
 
@@ -158,15 +167,6 @@ class ChatViewController: UIViewController {
                 }
                 sSelf.aiResponse = response
                 let reply = self?.aiResponse.result.fulfillment?.messages.first?.speech
-                let utterance = AVSpeechUtterance(string: reply ?? "hi")
-                utterance.volume = 1
-                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-
-                utterance.rate = 0.5
-
-                let synthesizer = AVSpeechSynthesizer()
-                synthesizer.speak(utterance)
-                
                 if let chatText = reply {
                     self?.showChat(chatText, true)
                 }
