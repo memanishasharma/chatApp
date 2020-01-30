@@ -145,6 +145,7 @@ class ChatViewController: UIViewController {
         let indexPath = IndexPath(item: lastItem, section: 0)
         //        self.chatCollView.insertItems(at: [indexPath])
         self.chatCollView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        self.chatCollView.reloadData()
         if !is_sent_by_me {
          requestAIResponse(text: chatText)
         }
@@ -233,13 +234,28 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
             
             
             if chat.is_sent_by_me {
+                if cell.displayState == .option {
+                    cell.addSubview(cell.yesButton)
+                    cell.addSubview(cell.noButton)
+        
+                    cell.messageTextView.frame = CGRect(x: 12, y: 12, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
+                    cell.textBubbleView.frame = CGRect(x: 6, y: -4, width: estimatedFrame.width + 16 + 8 + 16 + 12, height: estimatedFrame.height + 20 + 6)
+                    cell.yesButton.frame = CGRect(x: 10, y: estimatedFrame.height + 22, width: 40, height: 30)
+                    cell.noButton.frame = CGRect(x: 40 + 20 , y: estimatedFrame.height + 22 , width: 40 , height: 30)
+                    
+                    cell.bubbleImageView.image = ChatCell.grayBubbleImage
+                    cell.messageTextView.textColor = UIColor.black
+                    cell.nameLabel.textAlignment = .left
+                    cell.bubbleImageView.tintColor = UIColor(white: 0.95, alpha: 1)
+                } else {
+                    cell.nameLabel.textAlignment = .left
+                    cell.messageTextView.frame = CGRect(x: 48 + 8, y: 12, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
+                    cell.textBubbleView.frame = CGRect(x: 48 - 10, y: -4, width: estimatedFrame.width + 16 + 8 + 16 + 12, height: estimatedFrame.height + 20 + 6)
+                    cell.bubbleImageView.image = ChatCell.grayBubbleImage
+                    cell.bubbleImageView.tintColor = UIColor(white: 0.95, alpha: 1)
+                    cell.messageTextView.textColor = UIColor.black
+                }
                 
-                cell.nameLabel.textAlignment = .left
-                cell.messageTextView.frame = CGRect(x: 48 + 8, y: 12, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
-                cell.textBubbleView.frame = CGRect(x: 48 - 10, y: -4, width: estimatedFrame.width + 16 + 8 + 16 + 12, height: estimatedFrame.height + 20 + 6)
-                cell.bubbleImageView.image = ChatCell.grayBubbleImage
-                cell.bubbleImageView.tintColor = UIColor(white: 0.95, alpha: 1)
-                cell.messageTextView.textColor = UIColor.black
             } else {
                 cell.nameLabel.frame = CGRect(x: collectionView.bounds.width - estimatedFrame.width - 16 - 16 - 8 - 30 - 12, y: 0, width: estimatedFrame.width + 16, height: 18)
                 cell.messageTextView.frame = CGRect(x: collectionView.bounds.width - estimatedFrame.width - 16 - 16 - 8 - 30, y: 12, width: estimatedFrame.width + 16, height: estimatedFrame.height + 20)
@@ -275,6 +291,10 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
         var estimatedFrame = NSString(string: chat.text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], context: nil)
         estimatedFrame.size.height += 18
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChatCell.identifier, for: indexPath) as! ChatCell
+        if cell.displayState == .option {
+            estimatedFrame.size.height += 40
+        }
         return CGSize(width: chatCollView.frame.width, height: estimatedFrame.height + 20)
     }
     

@@ -9,9 +9,17 @@
 import Foundation
 import UIKit
 
+enum DisplayState: String {
+ case option
+ case message
+ case chartView
+}
+
 class ChatCell: UICollectionViewCell {
     
     static let identifier = String(describing: ChatCell.self)
+    
+    var displayState: DisplayState = .option
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -25,49 +33,6 @@ class ChatCell: UICollectionViewCell {
         super.awakeFromNib()
         setupViews()
     }
-
-    //    var chat: ChatModel? {
-    //        didSet{
-    //            guard let sender = chat else { return }
-    //            self.setupTextViewLayout(chat: sender)
-    //            if let url = URL.init(string: sender.user_image_url) {
-    //                fetchProfileImage(from: url)
-    //            }
-    //            self.bubbleImageView.image = sender.is_sent_by_me ? grayBubbleImage : blueBubbleImage
-    //            self.messageTextView.text = sender.text
-    //        }
-    //    }
-    
-//    private var imageCache = NSCache<NSString, UIImage>()
-//    var profileImageURL: URL? {
-//        didSet{
-//            self.fetchProfileImage(from: profileImageURL!)
-//        }
-//    }
-//
-//    func fetchProfileImage(from url: URL) {
-//
-//        //If image is available in cache, use it
-//        if let img = self.imageCache.object(forKey: url.absoluteString as NSString) {
-//            DispatchQueue.main.async {
-//                self.profileImageView.image = img
-//            }
-//            //Otherwise fetch from remote and cache it for futher use
-//        } else {
-//
-//            let session = URLSession.init(configuration: .default)
-//            session.dataTask(with: url) { (data, response, error) in
-//                DispatchQueue.main.async {
-//                    if let imgData = data {
-//                        if let img = UIImage(data: imgData) {
-//                            self.profileImageView.image = img
-//                            self.imageCache.setObject(img, forKey: url.absoluteString as NSString)
-//                        }
-//                    }
-//                }
-//                }.resume()
-//        }
-//    }
     
     static let grayBubbleImage = UIImage(named: "bubble_gray")!.resizableImage(withCapInsets: UIEdgeInsets(top: 22, left: 26, bottom: 22, right: 26)).withRenderingMode(.alwaysTemplate)
     static let blueBubbleImage = UIImage(named: "bubble_blue")!.resizableImage(withCapInsets: UIEdgeInsets(top: 22, left: 26, bottom: 22, right: 26)).withRenderingMode(.alwaysTemplate)
@@ -90,14 +55,14 @@ class ChatCell: UICollectionViewCell {
         return view
     }()
     
-//    var profileImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFill
-//        imageView.layer.cornerRadius = 15
-//         // imageView.image = #imageLiteral(resourceName: "sendIcon")
-//        imageView.layer.masksToBounds = true
-//        return imageView
-//    }()
+    var profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 15
+         // imageView.image = #imageLiteral(resourceName: "sendIcon")
+        imageView.layer.masksToBounds = true
+        return imageView
+    }()
     
     var bubbleImageView: UIImageView = {
         let imageView = UIImageView()
@@ -107,7 +72,6 @@ class ChatCell: UICollectionViewCell {
     }()
     
     var nameLabel: UILabel = {
-        
         let lbl = UILabel()
         lbl.textAlignment = .right
         lbl.textColor = AppConstants.magentaColor
@@ -115,7 +79,27 @@ class ChatCell: UICollectionViewCell {
         return lbl
     }()
     
-   private func setupViews() {
+    var yesButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("YES", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.backgroundColor = UIColor.systemGray2
+        button.layer.cornerRadius = 2
+
+        return button
+    }()
+    
+    var noButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("NO", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.backgroundColor = UIColor.systemGray2
+        button.layer.cornerRadius = 2
+
+        return button
+    }()
+
+    private func setupViews() {
         addSubview(textBubbleView)
         addSubview(nameLabel)
         addSubview(messageTextView)
