@@ -160,7 +160,8 @@ class ChatViewController: UIViewController {
                 let reply = self?.aiResponse.result.fulfillment?.messages.first?.speech
                 let utterance = AVSpeechUtterance(string: reply ?? "hi")
                 utterance.volume = 1
-                utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+                utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+
                 utterance.rate = 0.5
 
                 let synthesizer = AVSpeechSynthesizer()
