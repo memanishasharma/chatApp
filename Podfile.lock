@@ -1,0 +1,16 @@
+PODS:
+  - AI (0.0.8)
+
+DEPENDENCIES:
+  - AI (~> 0.0.7)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AI
+
+SPEC CHECKSUMS:
+  AI: 73c9a26daeb5362016fd345a2d0ee346919a526f
+
+PODFILE CHECKSUM: 11871d14e4223f7620e47f120db2550318434b60
+
+COCOAPODS: 1.8.4
