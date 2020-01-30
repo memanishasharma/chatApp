@@ -143,9 +143,8 @@ class ChatViewController: UIViewController {
 
         let lastItem = self.chatsArray.count - 1
         let indexPath = IndexPath(item: lastItem, section: 0)
-        //        self.chatCollView.insertItems(at: [indexPath])
         self.chatCollView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-        self.chatCollView.reloadData()
+         //   self.chatCollView.reloadData()
         if !is_sent_by_me {
          requestAIResponse(text: chatText)
         }
